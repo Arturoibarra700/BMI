@@ -1,0 +1,146 @@
+{
+  "openapi": "3.0.0",
+    "info": {
+      "title": "BMI Tracker API",
+      "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5012/v1",
+        "description": "BMI Server"
+      }
+    ],
+    "tags": [
+      {
+        "name": "BMI",
+        "description": "The methods to manipulate the BMI information"
+      }
+    ],
+    "paths": {
+      "/bmi": {
+        "get": {
+         
+          "summary": "Returns the whole BMI list",
+          "description": "Will get all of the available BMI items in the server.",
+    
+          "responses": {
+            "200": {
+              "description": "A JSON array of BMI items",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BMI"
+                    }
+                  },
+                  "examples": {
+                    "ColorExample": {
+                      "$ref": "#/components/examples/BMIArrayExample"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "BMI"
+          ]
+        },
+        "post": 
+        {
+          "summary": "Insert the new BMI in the database",
+          "description": "Save the new information in the data base",
+
+      "parameters": [
+            {
+              "in":"paths",
+              "name": "weight,height",
+              "Schema":
+              {
+                "type" : "double" 
+              },
+              "required": "true",
+              "description": "data numbers to calculate" 
+         
+            } ],
+
+           "responses" : {
+            "200":{
+              "description": "The BMI was add to data base",
+              
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/BMI"
+                    }
+                  },
+                  "examples": {
+                    "ColorExample": {
+                      "$ref": "#/components/examples/BMIArrayExample"
+                    }
+                  }
+                }
+              }
+            },
+            "500":{
+              "description": "the server encountered an unexpected condition"
+            }
+           }
+        }
+
+
+      }
+    },
+
+  
+    "components": {
+      "schemas": {
+        "BMI": {
+          "type": "object",
+          "properties": {
+            "bmiId": {
+              "type": "integer"
+            },
+            "bmi": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            },
+            "weight": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "examples": {
+        "BMIArrayExample": {
+          "summary": "BMI Array",
+          "value": [
+            {
+              "bmiId": 1,
+              "bmi": 20,
+              "height": 1.68,
+              "weight": 89
+            },
+            {
+              "bmiId": 2,
+              "bmi": 30,
+              "height": 1.78,
+              "weight": 109
+            },
+            {
+              "bmiId": 3,
+              "bmi": 18,
+              "height": 1.58,
+              "weight": 58
+            }
+          ]
+        }
+      }
+    }
+  }

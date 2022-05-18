@@ -1,0 +1,6 @@
+# Node JS Modules
+node_modules
+
+# Visual Studio Code configuration files
+.vscode
+.node_modules
