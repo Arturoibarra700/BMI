@@ -33,7 +33,9 @@ router.post('/', async (req, res) => {
     try {
         if (!isEmpty(measurements)) {
             const id = await bmi.save(measurements);
-            res.send(201).send(id);
+            res.send(201).send({
+                bmiId: id
+            });
         } else {
             res.status(204).send(null);
         }    
