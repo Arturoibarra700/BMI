@@ -1,146 +1,171 @@
 {
   "openapi": "3.0.0",
-    "info": {
-      "title": "BMI Tracker API",
-      "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
-      "version": "1.0.0"
-    },
-    "servers": [
-      {
-        "url": "http://localhost:5012/v1",
-        "description": "BMI Server"
-      }
-    ],
-    "tags": [
-      {
-        "name": "BMI",
-        "description": "The methods to manipulate the BMI information"
-      }
-    ],
-    "paths": {
-      "/bmi": {
-        "get": {
-         
-          "summary": "Returns the whole BMI list",
-          "description": "Will get all of the available BMI items in the server.",
-    
-          "responses": {
-            "200": {
-              "description": "A JSON array of BMI items",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/BMI"
+  "info": {
+    "title": "BMI Tracker API",
+    "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5012/v1",
+      "description": "BMI Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "BMI",
+      "description": "The methods to manipulate the BMI information"
+    }
+  ],
+  "paths": {
+    "/bmi": {
+      "get": {
+        "summary": "Returns the whole BMI list",
+        "description": "Will get all of the available BMI items in the server.",
+        "responses": {
+          "200": {
+            "description": "A JSON array of BMI items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BMI"
+                  }
+                },
+                "examples": {
+                  "ColorExample": {
+                    "$ref": "#/components/examples/BMIArrayExample"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "BMI"
+        ]
+      },
+      "post": {
+        "summary": "Insert the new BMI in the database",
+        "description": "Save the new information in the data base",
+        "requestBody": {
+          "description": "The Measure to make the calculation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "items": {
+                  "$ref": "#/components/schemas/Measurement"
+                }
+              },
+              "examples": {
+                "AnswerPartial": {
+                  "$ref": "#/components/examples/MeasurementExample"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The BMI was added to the Database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bmiId": {
+                      "type": "integer"
                     }
-                  },
-                  "examples": {
-                    "ColorExample": {
-                      "$ref": "#/components/examples/BMIArrayExample"
+                  }
+                },
+                "examples": {
+                  "BMIPostResponse": {
+                    "summary": "BMI ID",
+                    "value": {
+                      "bmiId": 1
                     }
                   }
                 }
               }
             }
           },
-          "tags": [
-            "BMI"
-          ]
+          "204": {
+            "description": "The body from the post is empty"
+          },
+          "500": {
+            "description": "The server encountered an unexpected condition"
+          }
         },
-        "post": 
-        {
-          "summary": "Insert the new BMI in the database",
-          "description": "Save the new information in the data base",
-
-      "parameters": [
-            {
-              "in":"paths",
-              "name": "weight,height",
-              "Schema":
-              {
-                "type" : "double" 
-              },
-              "required": "true",
-              "description": "data numbers to calculate" 
-         
-            } ],
-
-           "responses" : {
-            "200":{
-              "description": "The BMI was add to data base",
-              
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/BMI"
-                    }
-                  },
-                  "examples": {
-                    "ColorExample": {
-                      "$ref": "#/components/examples/BMIArrayExample"
-                    }
-                  }
-                }
-              }
-            },
-            "500":{
-              "description": "the server encountered an unexpected condition"
-            }
-           }
-        }
-
-
+        "tags": [
+          "BMI"
+        ]
       }
-    },
-
-  
-    "components": {
-      "schemas": {
-        "BMI": {
-          "type": "object",
-          "properties": {
-            "bmiId": {
-              "type": "integer"
-            },
-            "bmi": {
-              "type": "number"
-            },
-            "height": {
-              "type": "number"
-            },
-            "weight": {
-              "type": "number"
-            }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BMI": {
+        "type": "object",
+        "properties": {
+          "bmiId": {
+            "type": "integer"
+          },
+          "bmi": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "weight": {
+            "type": "number"
           }
         }
       },
-      "examples": {
-        "BMIArrayExample": {
-          "summary": "BMI Array",
-          "value": [
-            {
-              "bmiId": 1,
-              "bmi": 20,
-              "height": 1.68,
-              "weight": 89
-            },
-            {
-              "bmiId": 2,
-              "bmi": 30,
-              "height": 1.78,
-              "weight": 109
-            },
-            {
-              "bmiId": 3,
-              "bmi": 18,
-              "height": 1.58,
-              "weight": 58
-            }
-          ]
+      "Measurement": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number"
+          },
+          "weight": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "examples": {
+      "BMIArrayExample": {
+        "summary": "BMI Array",
+        "value": [
+          {
+            "bmiId": 1,
+            "bmi": 20,
+            "height": 1.68,
+            "weight": 89
+          },
+          {
+            "bmiId": 2,
+            "bmi": 30,
+            "height": 1.78,
+            "weight": 109
+          },
+          {
+            "bmiId": 3,
+            "bmi": 18,
+            "height": 1.58,
+            "weight": 58
+          }
+        ]
+      },
+      "MeasurementExample": {
+        "summary": "Measurement",
+        "value": {
+          "height": 1.68,
+          "weight": 89
         }
       }
     }
   }
+}
